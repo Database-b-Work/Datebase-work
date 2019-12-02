@@ -55,7 +55,13 @@ class User extends CI_Controller{
         }elseif($_SESSION['admin']){
             redirect("admin/index");
         }else{
-            redirect("staff/index");
-        }
+            redirect("staff/index");}
     }
+
+    public function logout(){
+        $_SESSION = array();
+        session_destroy();
+        header("location:/user/login");
+    }
+
 }
