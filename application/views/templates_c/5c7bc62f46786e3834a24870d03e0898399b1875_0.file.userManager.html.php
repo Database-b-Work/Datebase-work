@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 3.1.33, created on 2019-12-03 22:12:29
+  from 'D:\phpStudy\PHPTutorial\WWW\application\views\templates\admin\userManager.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5de66d4d774242_15496381',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '5c7bc62f46786e3834a24870d03e0898399b1875' => 
+    array (
+      0 => 'D:\\phpStudy\\PHPTutorial\\WWW\\application\\views\\templates\\admin\\userManager.html',
+      1 => 1575382333,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5de66d4d774242_15496381 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
@@ -7,11 +30,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>数据库管理系统</title>
     <!--jquery-->
-    <script src="/Resources/jquery.min.js"></script>
+    <?php echo '<script'; ?>
+ src="/Resources/jquery.min.js"><?php echo '</script'; ?>
+>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="/Resources/bootstrap.min.css">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="/Resources/bootstrap.min.js"></script>
+    <?php echo '<script'; ?>
+ src="/Resources/bootstrap.min.js"><?php echo '</script'; ?>
+>
     <style type="text/css">
         td {
             vertical-align: middle !important;
@@ -52,7 +79,8 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="JavaScript:void(0)" style="cursor:default">{<$smarty.session.name>}</a>
+                        <a href="JavaScript:void(0)" style="cursor:default"><?php echo $_SESSION['name'];?>
+</a>
                     </li>
                     <li>
                         <a href="/user/logout">退出</a>
@@ -67,9 +95,12 @@
         <div class="h4">
             <b>用户信息</b>
         </div>
-        <p>用户ID：{<$userInfo.id>}</p>
-        <p>用户姓名：{<$userInfo.username>}</p>
-        <p>用户省份/公司：{<$userInfo.province>}</p>
+        <p>用户ID：<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['id'];?>
+</p>
+        <p>用户姓名：<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['username'];?>
+</p>
+        <p>用户省份/公司：<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['province'];?>
+</p>
         <div style="width: 450px;margin:20px auto;overflow: hidden;display: flex;justify-content: space-between">
             <button class="btn btn-success" data-toggle="modal" data-target="#info">修改账户</button>
             <button class="btn btn-warning" data-toggle="modal" data-target="#pwd">修改密码</button>
@@ -91,13 +122,15 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">姓名</div>
-                                    <input name="username" type="text" class="form-control" value="{<$userInfo.username>}">
+                                    <input name="username" type="text" class="form-control" value="<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['username'];?>
+">
                                 </div>
                             </div>
                             <div class="form-group" style="margin-bottom:0">
                                 <div class="input-group">
                                     <div class="input-group-addon">省份/分公司</div>
-                                    <input name="province" type="text" class="form-control" value="{<$userInfo.province>}">
+                                    <input name="province" type="text" class="form-control" value="<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['province'];?>
+">
                                 </div>
                             </div>
                         </div>
@@ -151,7 +184,8 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <h4>确认要删除账号为{<$userInfo.id>}的账户?</h3>
+                        <h4>确认要删除账号为<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['id'];?>
+的账户?</h3>
                     </div>
                     <div class="modal-footer">
                         <button id="deleteButton" class="btn btn-primary">确认</button>
@@ -164,7 +198,8 @@
         </div>
     </div>
 </body>
-<script>
+<?php echo '<script'; ?>
+>
 
     $(function(){
 
@@ -172,7 +207,8 @@
         $("#changeButton").click(function(){
             $.post({
                 url: "/admin/changeUserInfo",
-                data: "id={<$userInfo.id>}&" + $("#changeInfo").serialize(),
+                data: "id=<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['id'];?>
+&" + $("#changeInfo").serialize(),
                 success:function(data){
                     alert(data.message);
                     if(data.code == 0){
@@ -188,7 +224,8 @@
             $.post({
                 url: "/admin/changeUserPasswd",
                 data:{
-                    id : "{<$userInfo.id>}",
+                    id : "<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['id'];?>
+",
                     pwd : $("#newPwd").val()
                 },
                 success:function(data){
@@ -205,7 +242,8 @@
             $.post({
                 url: "/admin/deleteUser",
                 data:{
-                    id : "{<$userInfo.id>}"
+                    id : "<?php echo $_smarty_tpl->tpl_vars['userInfo']->value['id'];?>
+"
                 },
                 success:function(data){
                     alert(data.message);
@@ -218,6 +256,8 @@
 
     })
 
-</script>
+<?php echo '</script'; ?>
+>
 
-</html>
+</html><?php }
+}
