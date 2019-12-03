@@ -15,15 +15,18 @@ class Staff extends CI_Controller{
             redirect("/admin/index");
         }
     }
-
+  
     public function  index()
-    {    
+    { //  $a=5;
+        //$this->ci_smarty->assign("a",$a);
         $this->ci_smarty->assign("");
         $this->ci_smarty->display("staff/index.html");
     }
 
     public function fileupload()
     {
+        $this->ci_smarty->assign("");
+        $this->ci_smarty->display("staff/fileupload.html");
 
     }
 
