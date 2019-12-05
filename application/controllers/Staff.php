@@ -29,5 +29,10 @@ class Staff extends CI_Controller{
         $this->ci_smarty->display("staff/fileupload.html");
 
     }
+    public function check()
+    {
+        $this->ci_smarty->assign("");
+        $this->ci_smarty->display("staff/check.html");
+    }
 
 }

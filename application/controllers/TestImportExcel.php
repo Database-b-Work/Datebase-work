@@ -22,11 +22,13 @@
 				}
  
 				//设置上传路径
-				$savePath = "./uploads/";
+				$savePath = FCPATH."uploads".DIRECTORY_SEPARATOR;
 				//文件命名
 				$str = date('Ymdhis');
-				$file_name = $str.".".$file_type;
-					if (!copy($tmp_file,$savePath.$file_name)) {
+                $file_name = $str.".".$file_type;
+                // if(file_exists(""))
+                $saveName=$savePath.$file_name;
+					if (!move_uploaded_file($tmp_file,$saveName)) {
 						echo "上传失败";
 					}
 					$this->load->library('PHPExcel');
