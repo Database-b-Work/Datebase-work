@@ -42,7 +42,7 @@ class FileModel extends CI_Model{
         ->where('province',$province)
         ->get()->row();
 
-        if($row->status == 5 || $row->status == 6){
+        if(empty($row)||$row->status == 5 || $row->status == 6){
             return false;
         }
         return true;
