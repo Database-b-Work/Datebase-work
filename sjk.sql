@@ -11,11 +11,42 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 04/12/2019 00:13:41
+ Date: 06/12/2019 16:01:18
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for baobiao
+-- ----------------------------
+DROP TABLE IF EXISTS `baobiao`;
+CREATE TABLE `baobiao`  (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `month` tinyint(4) NULL DEFAULT NULL,
+  `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '0 未导入，1已退回，2草稿，3已稽核，4已计算，5已上报，6完成',
+  `filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `last_modify_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`province`, `id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of baobiao
+-- ----------------------------
+INSERT INTO `baobiao` VALUES (1, 1, '黑龙江1公司', '0', '', '2019-12-06 10:14:18');
+INSERT INTO `baobiao` VALUES (2, 1, '黑龙江2公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (3, 1, '黑龙江3公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (4, 2, '黑龙江1公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (5, 2, '黑龙江2公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (6, 2, '黑龙江3公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (7, 3, '湖南1公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (8, 3, '湖南2公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (9, 3, '湖南3公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (10, 4, '湖南1公司', '0', '', '2019-12-06 14:52:03');
+INSERT INTO `baobiao` VALUES (11, 4, '湖南2公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (12, 4, '湖南3公司', '0', '', '2019-12-05 15:13:42');
+INSERT INTO `baobiao` VALUES (13, 6, '湖南1公司', '0', '', '2019-12-06 15:57:44');
 
 -- ----------------------------
 -- Table structure for branch
