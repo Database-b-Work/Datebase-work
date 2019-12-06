@@ -7,10 +7,27 @@
 		{
 			parent::__construct();
             $this->load->model('TestImportExcel_model','testimportexcel_model');
-           
-		}
+           $this->load->model('FileModel');
+           $this->load->model('UserModel');
+           $this->load->library('session');
+        }
  
-		public function importexcel(){
+		public function importExcel(){
+            
+            $this->output->set_content_type('application/json');
+            $month=$this->input->post('month');
+
+
+            if(!is_numeric(trim($month))||floor($month)!=$month||$month<0||$month>12){
+                $this->output->set_output(json_encode([
+                    "code" => 0,
+                    "message" => "输入的月份只能是1-12的正整数"
+                ]));
+                return;
+            }
+
+
+
 			if ($_FILES['userfile']['name']) {
 				$tmp_file = $_FILES['userfile']['tmp_name'];
 				$file_types = explode('.', $_FILES['userfile']['name']);
@@ -18,8 +35,22 @@
 				
 				//判断是否为excel文件
 				if (strtolower($file_type) != 'xlsx') {
-					echo "不是excel文件，请重新上传！";
-				}
+                    $this->output->set_output(json_encode([
+                        "code" => 0,
+                        "message" => "请上传.xlsx文件"
+                    ]));              
+                    return;
+                }
+
+
+                if(!$this->FileModel->canUpload($month,$_SESSION['province'])){
+                    $this->output->set_output(json_encode([
+                        "code" => 0,
+                        "message" => "该状态不允许上传"
+                    ]));
+                    return;
+                }
+
  
 				//设置上传路径
 				$savePath = FCPATH."uploads".DIRECTORY_SEPARATOR;
@@ -29,7 +60,11 @@
                 // if(file_exists(""))
                 $saveName=$savePath.$file_name;
 					if (!move_uploaded_file($tmp_file,$saveName)) {
-						echo "上传失败";
+                        $this->output->set_output(json_encode([
+                            "code" => 0,
+                            "message" => "上传失败"
+                        ]));
+                        return;
 					}
 					$this->load->library('PHPExcel');
 					$objPHPExcel = new PHPExcel();
@@ -70,23 +105,48 @@
                             }          
                             
                         }
+
                         if($currentRow==4){
-                        $statement_temp=$excel_data[0]; //四行A
-                        $month_temp=$excel_data[1];//四行B
-                        }//下面为自动计算的缺省值
+                            $statement_temp=$excel_data[0]; //四行A
+                            $month_temp=$excel_data[1];//四行B
+
+                            if($month_temp != $month){
+                                $this->output->set_output(json_encode([
+                                    "code" => 0,
+                                    "message" => "月份不匹配"
+                                ]));
+                                return;
+                            }
+                        }
+
+                        //下面为自动计算的缺省值
                         $excel_data[3]=$excel_data[5]+$excel_data[14]; 
                         $excel_data[4]=$excel_data[6]+$excel_data[15];
                         $excel_data[9]=$excel_data[7]/$excel_data[8];
                         $excel_data[18]=$excel_data[16]/$excel_data[17];
                         $excel_data[24]=$excel_data[23]/$excel_data[14];
                         $excel_data[26]=$excel_data[25]/$excel_data[14];
-                        $this->testimportexcel_model->insert_excel($excel_data[0],$excel_data[2],$excel_data[1],$excel_data[3],$excel_data[4],$excel_data[5],$excel_data[6],$excel_data[7],$excel_data[8],$excel_data[9],
+                        $this->testimportexcel_model->insert_excel($excel_data[0],$excel_data[1],$excel_data[2],$excel_data[3],$excel_data[4],$excel_data[5],$excel_data[6],$excel_data[7],$excel_data[8],$excel_data[9],
                         $excel_data[10],$excel_data[11],$excel_data[12],$excel_data[13],$excel_data[14],$excel_data[15],$excel_data[16],$excel_data[17],$excel_data[18],
                         $excel_data[19],$excel_data[20],$excel_data[21],$excel_data[22],$excel_data[23],$excel_data[24],$excel_data[25],$excel_data[26],$excel_data[27]);
 					}
- 
-                    echo "导入成功";
-                 //   $this->ci_smarty->display("staff/index.html");
+                    
+
+                    //更新baobiao表的状态,即添加文件名，修改报表状态为草稿状态
+                    $condition=[];
+                    $condition['province']=$_SESSION['province'];
+                    $condition['month']=$month_temp;
+                    $dest=[];
+                    $dest['filename']=$saveName;
+                    $dest['status']=2;
+                    $a=$this->FileModel->updateFile($condition,$dest);
+
+                    $this->output->set_output(json_encode([
+                        "code" => 1,
+                        "message" => "上传成功"
+                    ]));
+                    return;
+                //    $this->ci_smarty->display("staff/index.html");
                     
 			}
 		}

@@ -19,6 +19,7 @@ class UserModel extends CI_Model{
         if(isset($row)){
             $_SESSION['isLogined']=1;
             $_SESSION['name']=$username;
+            $_SESSION['province']=$row->province;
 
             if($row->isAdmin){
                 $_SESSION['admin']=1;
@@ -31,5 +32,14 @@ class UserModel extends CI_Model{
         return false;
     }
 
+    //返回用户信息
+    public function getUserInfo(
+        string $name,
+        string $info
+    ){
+        $query=$this->db->select('pronvince')->where('username',$name);
+        $row=$query->row();
+        return $row->$info;
+    }
 
 }

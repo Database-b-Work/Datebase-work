@@ -41,7 +41,7 @@
                         <a href="">主页</a>
                     </li>
                     <li class="active">
-                        <a href="/Staff/fileupload">报表导入</a>
+                        <a href="/Staff/index">报表管理</a>
                     </li>
                     <li>
                         <a href="">功能2</a>
@@ -66,106 +66,135 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <!-- <div class="container-fluid">
-        <div style="width:300px;" class="center-block">
-            <div class="form-inline">
-                <div class="form-group">
-                    <input type="text" id="input" class="form-control" placeholder="输入搜索内容" name="keyword" style="width:130px;"
-                           {<if $mode == keyword>}value='{<$smarty.get.keyword>}'{<else if $mode == bookId>}value='{<$smarty.get.bookId>}'{</if>}>
-                </div>
-                <div class="form-group">
-                    <select name="type" class="form-control">
-                        <option value="name" {<if $mode == keyword>}selected{</if>}>书名查询</option>
-                        <option value="num" {<if $mode == bookId>}selected{</if>}>书号查询</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button type="button" id="research" class="btn btn-primary">搜索</button>
-                </div>
-            </div>
-        </div>
-        <a class="btn btn-info pull-right" href="?p=Admin&c=Book&a=add" style="margin:15px 10px 10px;">添加图书</a>
+    <div class="container-fluid">
+        <!-- <a class="btn btn-info pull-right" href="#" style="margin:15px 10px 10px;">报表导入</a> -->
         <table class="table table-bordered table-hover text-center">
             <thead>
                 <tr class="active">
-                    <th class="text-center">图书号</th>
-                    <th class="text-center">图书名</th>
-                    <th class="text-center">作者</th>
+                    <th class="text-center">公司</th>
+                    <th class="text-center">月份</th>
+                    <th class="text-center">最后修改时间</th>
                     <th class="text-center" style="width: 90px;">状态</th>
                     <th class="text-center" style="width: 100px;">操作</th>
                 </tr>
             </thead>
             <tbody>
-                {<if empty($books)>}
+                {<foreach $baobiaos as $baobiao>}
                     <tr>
-                        <td colspan="5">无记录！</td>
-                    </tr>
-                {</if>}
-                {<foreach $books as $book>}
-                    <tr>
-                        <td>{<$book.id>}</td>
-                        <td>
-                            <a href="?p=Admin&c=Book&a=detail&id={<$book.id>}">{<$book.name>}</a>
-                        </td>
-                        <td>{<$book.author>}</td>
-                        {<if $book.user_id == "">}
-                            <td class="success">在馆</td>
-                        {<else>}
-                            <td class="danger">已借出</td>
+                        <td>{<$baobiao.province>}</td>
+                        <!-- <td>{<$baobiao.month>}</td> -->
+                        <td>{<$baobiao.month>}</td>
+                        <td>{<$baobiao.last_modify_time>}</td>
+                        {<if $baobiao.status == 0 >}
+                            <td class="danger">未上报</td>
+                        {<elseif $baobiao.status == 1>}
+                            <td class="danger">已退回</td>
+                        {<elseif $baobiao.status == 2>}
+                            <td class="danger">草稿</td>
+                        {<elseif $baobiao.status == 3>}
+                            <td class="danger">已稽核</td>
+                        {<elseif $baobiao.status == 4>}
+                            <td class="danger">已计算</td>        
+                        {<elseif $baobiao.status == 5>}
+                            <td class="danger">已上报</td> 
+                        {<elseif $baobiao.status == 6>}
+                            <td class="success">已通过</td>                                                   
                         {</if>}
                         <td>
-                            <a href="?p=Admin&c=Book&a=edit&id={<$book.id>}" class="btn btn-success btn-xs">修改</a>&nbsp;
-                            <button class="btn btn-danger btn-xs delete" bookId="{<$book.id>}">删除</button>
+                            {<if $baobiao.status !=0>}
+                                <a href="/staff/viewFile" class="btn btn-success btn-xs">查看</a>&nbsp;
+                            {<else>}
+                                <button class="btn btn-success" data-toggle="modal" data-target="#upload">上报</button>
+                            {</if>}
+                            {<if $baobiao.status==1 || $baobiao.status==2 ||$baobiao.status==3 ||$baobiao.status==4>}                             
+                            <a href="/staff/editFile" class="btn btn-success btn-xs">修改</a>&nbsp;
+                            {</if>}
+                            <!-- <a href="/staff/editFile" class="btn btn-success btn-xs">修改</a>&nbsp; -->
+
+                            <!-- <button class="btn btn-danger btn-xs delete" baobiaoId="{<$baobiao.id>}">删除</button> -->
                         </td>
                     </tr>
                 {</foreach>}
             </tbody>
-        </table> -->
+        </table>
 
+        <div class="container-fluid text-center">
+                <!-- 修改用户信息模态框（Modal） -->
+                <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="margin-top:150px;">
+                        <div class="modal-content">
+                            <form id="upload" action="/TestImportExcel/importexcel" method="post" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        上传文件
+                                    </h4>
+                                </div>
+                                <div class="modal-body center-block" style="width:45%">
+                                    <div class="form-group" style="margin-bottom:0">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">月份</div>
+                                            <input id="month" name="month" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">选择文件</div>
+                                            <input id="excel_file"name="userfile" type="file" class="form-control" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="uploadButton" type="button" class="btn btn-primary">确认</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal -->
+                </div>
         <!-- 分页 -->
         <!-- {<$pageStr>}
 
     </div> -->
 </body>
-<!-- <script>
+<script>
     
     $(function(){
-
-        //注册回车查找
-        $("#input").keydown(function(event){
-            if(event.keyCode == 13){
-                $("#research").click();
+        $("#uploadButton").click(function () {
+            var files = $('#excel_file').prop('files');
+            var month = $('#month').val();
+            if(month.length==0){
+                alert("月份不能为空");
+                return false;
+            }else if(files.length==0){
+                alert("请先选择上传的文件再提交");
+                return false;
             }
-        });
-        //查找
-        $("#research").click(function(){
-            if($("#input").val().length > 0){
-                if($("[name='type']").val() == "name"){
-                    var mode = "keyword";
-                }else if($("[name='type']").val() == "num"){
-                    var mode = "bookId";
+            var data = new FormData();
+            data.append('userfile', files[0]);
+            data.append('month',month);
+
+            $.post({
+                // type: 'POST',
+                url: "/testimportexcel/importexcel",
+                data: data,
+                cache: false,  //设为false是为了兼容ie8，防止ie8之前版本缓存get请求的处理方式
+                processData: false,  //默认情况下，发送的数据将被转换为对象（从技术角度来讲并非字符串）以配合默认内容类型"application/x-www-form-urlencoded"。如果要发送DOM树信息或者其他不希望转换的信息，请设置为false
+                contentType: false,  //为了避免 JQuery 对其操作，从而失去分界符
+                success: function (data) {
+                    alert(data.message);
+                    location.href="/staff/index";
                 }
-                location.href = "?p=Admin&c=Book&a=index&"+ mode + "=" + $("#input").val();
-            }else{
-                alert("请输入搜索条件");
-            }
+            });
         });
 
-        //删除
-        $(".delete").click(function(){
-            if(confirm("真的要删除吗?")){
-                $.post({
-                    url: "?p=Admin&c=Book&a=delete",
-                    data: {"id":$(this).attr("bookId")},
-                    success:function(data){
-                        alert(data.message);
-                        location.reload();
-                    }
-                });
-            }
-        })
+
+
+
+
     });
 
-</script> -->
+</script>
 
 </html>
