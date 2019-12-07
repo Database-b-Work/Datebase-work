@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 06/12/2019 16:01:18
+ Date: 08/12/2019 00:36:40
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `baobiao`;
 CREATE TABLE `baobiao`  (
   `id` int(8) NOT NULL AUTO_INCREMENT,
-  `month` tinyint(4) NULL DEFAULT NULL,
+  `month` tinyint(4) NOT NULL,
   `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '0 未导入，1已退回，2草稿，3已稽核，4已计算，5已上报，6完成',
   `filename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
@@ -46,7 +46,7 @@ INSERT INTO `baobiao` VALUES (9, 3, '湖南3公司', '0', '', '2019-12-05 15:13:
 INSERT INTO `baobiao` VALUES (10, 4, '湖南1公司', '0', '', '2019-12-06 14:52:03');
 INSERT INTO `baobiao` VALUES (11, 4, '湖南2公司', '0', '', '2019-12-05 15:13:42');
 INSERT INTO `baobiao` VALUES (12, 4, '湖南3公司', '0', '', '2019-12-05 15:13:42');
-INSERT INTO `baobiao` VALUES (13, 6, '湖南1公司', '0', '', '2019-12-06 15:57:44');
+INSERT INTO `baobiao` VALUES (13, 6, '湖南1公司', '0', '', '2019-12-08 00:36:17');
 
 -- ----------------------------
 -- Table structure for branch
@@ -81,17 +81,8 @@ CREATE TABLE `branch`  (
   `trans_replace_station_num` int(11) NULL DEFAULT NULL,
   `trans_replace_proportion` float NULL DEFAULT NULL,
   `index_explain` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `state` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`type`, `month`, `statement`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of branch
--- ----------------------------
-INSERT INTO `branch` VALUES ('湖南', 6, '电站类型1', 11, 15, 5, 10, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'a', 0);
-INSERT INTO `branch` VALUES ('湖南', 6, '电站类型2', 12, 16, 6, 11, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'b', 0);
-INSERT INTO `branch` VALUES ('湖南', 6, '电站类型3', 13, 17, 7, 12, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'c', 0);
-INSERT INTO `branch` VALUES ('湖南', 6, '电站类型4', 14, 138, 8, 133, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'd', 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -119,5 +110,18 @@ INSERT INTO `user` VALUES (7, 'hn3', '1', 0, '湖南3公司');
 INSERT INTO `user` VALUES (8, 'qh1', '1', 0, '青海1公司');
 INSERT INTO `user` VALUES (9, 'qh2', '1', 0, '青海2公司');
 INSERT INTO `user` VALUES (10, 'qh3', '1', 0, '青海3公司');
+
+-- ----------------------------
+-- Table structure for zhibiao
+-- ----------------------------
+DROP TABLE IF EXISTS `zhibiao`;
+CREATE TABLE `zhibiao`  (
+  `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `month` tinyint(255) NOT NULL,
+  `average` float(10, 2) NULL DEFAULT NULL,
+  `proportion` float(10, 2) NULL DEFAULT NULL,
+  `cost` float(10, 2) NULL DEFAULT NULL,
+  PRIMARY KEY (`province`, `month`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
