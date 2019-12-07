@@ -102,7 +102,7 @@
                         {</if>}
                         <td>
                             {<if $baobiao.status !=0>}
-                                <a href="/staff/viewFile" class="btn btn-success btn-xs">查看</a>&nbsp;
+                                <a href="/staff/viewFile/{<$baobiao.month>}" class="btn btn-success btn-xs">查看</a>&nbsp;
                             {<else>}
                                 <button class="btn btn-success" data-toggle="modal" data-target="#upload">上报</button>
                             {</if>}
