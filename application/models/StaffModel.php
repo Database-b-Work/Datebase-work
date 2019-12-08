@@ -16,7 +16,7 @@ class StaffModel extends CI_Model{
         ->delete('branch');
     }
   
-    //通过数组直接插入,用于用户修改报表 editFile.php
+    //通过数组直接插入,用于用户修改报表 editFile.php ,TestImportExcel_model中则是传入字符串，两种不同的方式
     public function insertExcel(
         array $item
     ){
@@ -52,6 +52,5 @@ class StaffModel extends CI_Model{
            );
         $this->db->insert('branch',$data);
     }
-
 
 }

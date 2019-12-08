@@ -12,7 +12,7 @@ class Staff extends CI_Controller{
 
         //权限控制
         if(@!$_SESSION['isLogined']){
-            redirect("common/login");
+            redirect("user/login");
             return;
         }elseif(@$_SESSION['admin']){
             //helper("url")已经在autoload.php中自动加载
@@ -89,9 +89,15 @@ class Staff extends CI_Controller{
 
         //先删除数据
         $this->StaffModel->deleteExcel($month);
-        //再插入数据
-        foreach($data as $item){
-            $this->StaffModel->insertExcel($item);
+        //再重新导入数据，导入之前按公式先计算
+        foreach($data as $excel_data){
+            $excel_data[3]=$excel_data[5]+$excel_data[14]; 
+            $excel_data[4]=$excel_data[6]+$excel_data[15];
+            $excel_data[9]=$excel_data[7]/$excel_data[8];
+            $excel_data[18]=$excel_data[16]/$excel_data[17];
+            $excel_data[24]=$excel_data[23]/$excel_data[14];
+            $excel_data[26]=$excel_data[25]/$excel_data[14];
+            $this->StaffModel->insertExcel($excel_data);
         }
 
         $this->output->set_output(json_encode([
@@ -195,6 +201,7 @@ class Staff extends CI_Controller{
             "status" => 3
         ];
         $this->FileModel->updateFile($condition,$dest);
+
         return;
     }
 
@@ -225,31 +232,30 @@ class Staff extends CI_Controller{
         }
 
 
-// //还没写好报表计算:思路：根据要求计算,然后填入数据库的zhibiao表中
-// 对应的模型文件是ZhiBiaoModel.php
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+        $data=$this->input->post('value');
+        foreach($data as $item){
+            $arr=array();
+            $arr['average']=($item[8]+$item[17])/($item[6]+$item[14]);
+            $arr['proportion']=($item[14]/($item[6]+$item[14]));
+            $arr['cost']=($item[7]+$item[16])/($item[8]+$item[17]);
+            $this->ZhiBiaoModel->insert($item);
+        }
 
-    $this->output->set_output(json_encode([
-        "code" => 0,
-        "message" => "计算成功"
-    ]));
-    return;
+        //更新报表状态为4(已计算状态)
+        $condition=[
+            "province"=>$_SESSION['province'],
+            "month" => $_SESSION['editMonth']
+        ];
+        $dest=[
+            "status" => 4
+        ];
+        $this->FileModel->updateFile($condition,$dest);
+
+        $this->output->set_output(json_encode([
+            "code" => 0,
+            "message" => "计算成功"
+        ]));
+        return;
 
 
 

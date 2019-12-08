@@ -55,6 +55,7 @@ class FileModel extends CI_Model{
         ->where('month',$month)
         ->where('statement',$_SESSION['province'])
         ->from('branch')
+        ->order_by('type')
         ->get();
 
         $result=$query->result_array();
