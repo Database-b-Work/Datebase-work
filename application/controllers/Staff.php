@@ -105,6 +105,8 @@ class Staff extends CI_Controller{
             "message" => "更新成功"
         ]));
         
+        $_SESSION['editStatus']=2;
+
         //更新报表状态为2(草稿状态)
         $condition=[
             "province"=>$_SESSION['province'],
@@ -191,6 +193,8 @@ class Staff extends CI_Controller{
             "code" => 1,
             "message" => "稽核成功"
         ]));
+
+        $_SESSION['editStatus']=3;
         
        //更新报表状态3(已稽核状态)
         $condition=[
@@ -222,7 +226,7 @@ class Staff extends CI_Controller{
 
         $this->output->set_content_type("application/json");
 
-        //已上报的不允许编辑（还有已上报和未上传,防止前端绕过,这里再次进行检查）
+
         if($_SESSION['editStatus']!=3){
             $this->output->set_output(json_encode([
                 "code" => 0,
@@ -235,11 +239,16 @@ class Staff extends CI_Controller{
         $data=$this->input->post('value');
         foreach($data as $item){
             $arr=array();
+            $arr['province']=$item[0];
+            $arr['month']=$item[1];
+            $arr['type']=$item[2];
             $arr['average']=($item[8]+$item[17])/($item[6]+$item[14]);
             $arr['proportion']=($item[14]/($item[6]+$item[14]));
             $arr['cost']=($item[7]+$item[16])/($item[8]+$item[17]);
-            $this->ZhiBiaoModel->insert($item);
+            $this->ZhiBiaoModel->insert($arr);
         }
+
+        $_SESSION['editStatus']=4;
 
         //更新报表状态为4(已计算状态)
         $condition=[
@@ -287,6 +296,7 @@ class Staff extends CI_Controller{
             return;
         }
 
+        $_SESSION['editStatus']=5;
 
         //更新报表状态为5(已上报状态)
         $condition=[
