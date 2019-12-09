@@ -113,7 +113,7 @@ class Admin extends CI_Controller{
         $this->output->set_content_type('application/json');
 
         $id = $this->input->post('id');
-        $pwd = $this->input->post('pwd');
+        $pwd = $this->input->post("pwd");
 
         $userInfo['passwd']=password_hash($pwd,PASSWORD_BCRYPT);
 

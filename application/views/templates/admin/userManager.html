@@ -187,7 +187,7 @@
             $.post({
                 url: "/admin/changeUserPasswd",
                 data:{
-                    id : "{<$userInfo.id>}",
+                    "id" : "{<$userInfo.id>}",
                     pwd : $("#newPwd").val()
                 },
                 success:function(data){
@@ -202,7 +202,7 @@
             $.post({
                 url: "/admin/deleteUser",
                 data:{
-                    id : "{<$userInfo.id>}"
+                    "id" : "{<$userInfo.id>}"
                 },
                 success:function(data){
                     alert(data.message);
@@ -211,7 +211,7 @@
             })
         });
 
-        //删除用户
+        //返回
         $("#ret").click(function(){
             location.href = "/admin/userIndex";
         });
