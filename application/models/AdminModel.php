@@ -16,6 +16,7 @@ class AdminModel extends CI_Model{
         $result=$this->db
         ->select('id,username,province')
         ->from('user')
+        ->order_by('id')
         ->where([
             $condition => $value
         ])

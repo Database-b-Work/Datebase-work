@@ -13,14 +13,16 @@ class UserModel extends CI_Model{
         string $username,
         string $passwd
     ){
-        $sql="select * from user where username=? and passwd=?";
-        $query=$this->db->query($sql,array($username,$passwd));
-        $row=$query->row();
-        if(isset($row)){
+        $sql="select passwd,province,isAdmin from user where username=? ";
+        $row=$this->db->query($sql,array($username))->row();
+        if(empty($row)){
+            return false;
+        }
+        $hash=$row->passwd;
+        if(password_verify($passwd,$hash)){
             $_SESSION['isLogined']=1;
             $_SESSION['name']=$username;
             $_SESSION['province']=$row->province;
-
             if($row->isAdmin){
                 $_SESSION['admin']=1;
             }else{

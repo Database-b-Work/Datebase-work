@@ -113,7 +113,9 @@ class Admin extends CI_Controller{
         $this->output->set_content_type('application/json');
 
         $id = $this->input->post('id');
-        $userInfo['passwd'] = $this->input->post('pwd');
+        $pwd = $this->input->post('pwd');
+
+        $userInfo['passwd']=password_hash($pwd,PASSWORD_BCRYPT);
 
         if(empty($id))
         {
@@ -170,7 +172,7 @@ class Admin extends CI_Controller{
 
     }  
 
-
+    //添加用户
     public function addUser()
     {
         $this->ci_smarty->display("admin/userAdd.html");
@@ -192,9 +194,10 @@ class Admin extends CI_Controller{
         }
 
         $user['id']      =  $this->input->post('id',TRUE);
-        $user['passwd']     =  $this->input->post('password');
+        $user['passwd']     =  password_hash($this->input->post('password'),PASSWORD_BCRYPT);
         $user['username']    =  $this->input->post('username',TRUE);
         $user['province']   =  $this->input->post('province',True);
+
 
         if(in_array("",$user))
         {
@@ -211,7 +214,7 @@ class Admin extends CI_Controller{
         if(!empty($result))
         {
             $this->output->set_output(json_encode([
-                "code" => 1,
+                "code" => 0,
                 "message" => '用户已存在'
             ]));
         }

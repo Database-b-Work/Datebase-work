@@ -28,11 +28,11 @@
                     </div>
                 </div>
                 <div class="form-group form-inline">
-                    <div class="input-group" style="width:155px">
+                    <div class="input-group" style="width:140px">
                         <input type="text" class="form-control" name="verify" placeholder="请输入验证码">
                     </div>
                     <div class="input-group">
-                        <img src="/captcha/get" id="verifyPic" style="width:60px;height:34px;border-radius:4px;">
+                        <img src="/captcha/get" id="verifyPic" style="width:70px;height:40px;border-radius:2px;">
                     </div>
                 </div>
                 <button type="button" class="form-control btn btn-primary" id="submit">登录</button>

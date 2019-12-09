@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 08/12/2019 00:36:40
+ Date: 09/12/2019 12:56:59
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ INSERT INTO `baobiao` VALUES (9, 3, '湖南3公司', '0', '', '2019-12-05 15:13:
 INSERT INTO `baobiao` VALUES (10, 4, '湖南1公司', '0', '', '2019-12-06 14:52:03');
 INSERT INTO `baobiao` VALUES (11, 4, '湖南2公司', '0', '', '2019-12-05 15:13:42');
 INSERT INTO `baobiao` VALUES (12, 4, '湖南3公司', '0', '', '2019-12-05 15:13:42');
-INSERT INTO `baobiao` VALUES (13, 6, '湖南1公司', '0', '', '2019-12-08 00:36:17');
+INSERT INTO `baobiao` VALUES (13, 6, '湖南1公司', '2', 'D:\\phpStudy\\PHPTutorial\\WWW\\uploads\\20191208110415.xlsx', '2019-12-08 11:04:15');
 
 -- ----------------------------
 -- Table structure for branch
@@ -85,6 +85,14 @@ CREATE TABLE `branch`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of branch
+-- ----------------------------
+INSERT INTO `branch` VALUES ('湖南1公司', 6, '电站类型4', 14, 138, 8, 133, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'd');
+INSERT INTO `branch` VALUES ('湖南1公司', 6, '电站类型3', 13, 17, 7, 12, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'c');
+INSERT INTO `branch` VALUES ('湖南1公司', 6, '电站类型2', 12, 16, 6, 11, 10, 50, 0.2, 5, 4, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 6, 5, 5.5, 4.5, 5, 0.833333, 6, 1, 'b');
+INSERT INTO `branch` VALUES ('湖南1公司', 6, '电站类型1', 11, 15, 5, 10, 10, 5, 2, 0.3, 0.1, 4.5, 3.5, 6, 5, 4, 6, 0.666667, 0.8, 0.5, 5.5, 4.5, 5, 0.833333, 6, 1, 'a');
+
+-- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
@@ -100,16 +108,16 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '1', 1, '总公司');
-INSERT INTO `user` VALUES (2, 'hlj1', '1', 0, '黑龙江1公司');
-INSERT INTO `user` VALUES (3, 'hlj2', '1', 0, '黑龙江2公司');
-INSERT INTO `user` VALUES (4, 'hlj3', '1', 0, '黑龙江3公司');
-INSERT INTO `user` VALUES (5, 'hn1', '1', 0, '湖南1公司');
-INSERT INTO `user` VALUES (6, 'hn2', '1', 0, '湖南2公司');
-INSERT INTO `user` VALUES (7, 'hn3', '1', 0, '湖南3公司');
-INSERT INTO `user` VALUES (8, 'qh1', '1', 0, '青海1公司');
-INSERT INTO `user` VALUES (9, 'qh2', '1', 0, '青海2公司');
-INSERT INTO `user` VALUES (10, 'qh3', '1', 0, '青海3公司');
+INSERT INTO `user` VALUES (1, 'admin', '$2y$10$aSTesW7pTao5p/D76K6s0O.yBdPmSFb1qVb.QVJ.6vynNS2xzT/pC', 1, '总公司');
+INSERT INTO `user` VALUES (3, 'hlj2', '$2y$10$BTDxsasx9VQO.R//5fwtfuDdNUfZAobdRbuXMluNNdNz1pfLPz1o.', 0, '黑龙江2公司');
+INSERT INTO `user` VALUES (4, 'hlj3', '$2y$10$YG.RBUaullvndFU3ZXBVLOf0KpVA7hhygeguppEKJed/LE94m3F2y', 0, '黑龙江3公司');
+INSERT INTO `user` VALUES (5, 'hn1', '$2y$10$hYBubSmnxtBY9xLUJa2zXenLeuNSwPWkIe8LCajU7a9Mo7U.5xkWW', 0, '湖南1公司');
+INSERT INTO `user` VALUES (6, 'hn2', '$2y$10$sRzcbdmDfmBO68rFn33OmehCgqCUYyaJ/OhQongiZ5T4ulxHnDUr2', 0, '湖南2公司');
+INSERT INTO `user` VALUES (7, 'hn3', '$2y$10$H8hg4pXrcWzmbGCKLBosJuyo8sUdqdL.D1QVUlLMXoMPKsKJvml2y', 0, '湖南3公司');
+INSERT INTO `user` VALUES (8, 'qh1', '$2y$10$ljCfGk/x0qVQN7q6yRCUsuYDtpXpm4qFH3GixjA8bewoCfwSABqci', 0, '青海1公司');
+INSERT INTO `user` VALUES (9, 'qh2', '$2y$10$giX9vl/qC8AqasqKJ.CAw.qk3p5x63GkktO/bK87itb4tn/Gn6tdm', 0, '青海2公司');
+INSERT INTO `user` VALUES (10, 'qh3', '$2y$10$U6HPPMREE.vGUBjs.zXJy..FjpYKOZieIcFK4BgBzeodf8mMY4UJK', 0, '青海3公司');
+INSERT INTO `user` VALUES (2, 'hlj1', '$2y$10$3zQjsL3a4kgHakbPcuVgWeE9iZuPDfycm2q3H5UyAXLskTWS8hez2', 0, '黑龙江1公司');
 
 -- ----------------------------
 -- Table structure for zhibiao

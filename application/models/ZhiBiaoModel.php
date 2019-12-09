@@ -7,9 +7,11 @@ class ZhiBiaoModel extends CI_Model{
     }
 
     //插入数据到ZhiBiao 表中
+    //pronvice month average proportion cost
     public function insert(
-
+        array $data
     ){
-
+        $this->db->insert('zhibiao',$data);
+        return;
     }
 }

@@ -89,6 +89,8 @@
         <div class="form-group">
             <button type="button" id="submit" class="btn btn-primary" style="margin-right: 10px">添&nbsp;加</button>
             <button type="reset" id="reset" class="btn btn-danger" style="margin-left: 10px">重&nbsp;置</button>
+            <!-- <button type="ret" id="ret" class="btn btn-danger" style="margin-left: 10px">返&nbsp;回</button> -->
+
         </div>
     </form>
 </body>
@@ -103,12 +105,13 @@
                 data: $("#form").serialize(),
                 success: function(data){
                     alert(data.message);
-                    if(data.code == 1){
+                    if(data.code == 0){
                         $("#reset").click();
                     }
                 }
             })
         });
+
 
     })
 

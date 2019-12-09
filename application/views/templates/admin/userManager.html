@@ -74,6 +74,7 @@
             <button class="btn btn-success" data-toggle="modal" data-target="#info">修改账户</button>
             <button class="btn btn-warning" data-toggle="modal" data-target="#pwd">修改密码</button>
             <button class="btn btn-danger" data-toggle="modal" data-target="#del">删除账户</button>
+            <button class="btn btn-danger" id="ret">返回</button>
         </div>
     </div>
     <div class="container-fluid text-center">
@@ -175,9 +176,7 @@
                 data: "id={<$userInfo.id>}&" + $("#changeInfo").serialize(),
                 success:function(data){
                     alert(data.message);
-                    if(data.code == 0){
-                        location.reload();
-                    }
+                    location.reload();
                 }
             })
         });
@@ -193,9 +192,7 @@
                 },
                 success:function(data){
                     alert(data.message);
-                    if(data.code == 0){
-                        location.reload();
-                    }
+                    location.reload();
                 }
             })
         });
@@ -214,7 +211,10 @@
             })
         });
 
-
+        //删除用户
+        $("#ret").click(function(){
+            location.href = "/admin/userIndex";
+        });
 
     })
 
