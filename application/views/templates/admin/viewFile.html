@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据库管理系统</title>
+    <!--jquery-->
+    <script src="/Resources/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/Resources/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/Resources/bootstrap.min.js"></script>
+    <!-- 引入handsontable 核心 Javascript 文件 -->
+    <script src="/Resources/hand/handsontable.full.min.js"></script>
+    <!-- 引入handsontable 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/Resources/hand/handsontable.full.min.css" >
+    <style type="text/css">
+        td {
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="JavaScript:void(0)">
+					<b>数据库管理系统</b>
+				</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="nav">
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="">主页</a>
+					</li>
+					<li class="active">
+						<a href="/admin/audit">审核管理</a>
+					</li>
+					<li>
+						<a href="/admin/usermanager">用户管理</a>
+					</li>
+					<li>
+						<a href="">角色管理</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="JavaScript:void(0)" style="cursor:default">{<$smarty.session.name>}</a>
+					</li>
+					<li>
+						<a href="/user/logout">退出</a>
+					</li>
+				</ul>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+	<div id="example1"></div>
+	<button name="pass" id="pass" class="intext-btn">通过</button>
+	<button name="back" id="back" class="intext-btn">退回</button>
+</body>
+<script type="text/JavaScript">
+	var data = {<$result>};
+	var example1 = document.getElementById('example1');
+	var hot = new Handsontable(example1, {
+		data: data,
+		rowHeaders: true,
+		nestedHeaders: [
+			['', '', '', '电站数量(个)', '电表数量(个)', { label: '直供电', colspan: 9 }, { label: '转供电', colspan: 13 }, ''],
+			['省份/公司', '月份', '电站类型', '', '', '直供电的电站数量(个)', '直供电电表数量(个)', '直供电电费(元)（不含税）', '直供电电量(度)', '平均单价(元/度)(不含税)', '最高单价(元/度)(不含税)', '最低单价(元/度)(不含税)', '最高单价(元/度)(含税)', '最低单价(元/度)(含税)', '转供电的电站数量(个)', '直供电电表数量(个)', '转供电电费(元)（不含税）', '转供电电量(度)', '平均单价(元/度)(不含税)', '最高单价(元/度)(不含税)', '最低单价(元/度)(不含税)', '最高单价(元/度)(含税)', '最低单价(元/度)(含税)', '转供电子缴费的电站数量(个)', '转供电费自缴比例', '转供电费三方公司代缴的电站数量', '转供电费三方公司代缴比例', ''],
+			['', '', '', '公式计算,无需填写', '公式计算,无需填写', ' ', ' ', '', '', '公式计算,无需填写', '合同中最高单价', '合同中最低单价', '', '', '', '', '', '', '公式计算,无需填写', '合同中最高价', '合同中最低价', '', '', '', '公式计算,无需填写', '', '公式计算,无需填写', '指标情况说明']
+		],
+		columns: [{ readOnly: true, data: "statement" }, { readOnly: true, data: "month" }, { readOnly: true, data: "type" }, { readOnly: true, data: "station_num" }, { readOnly: true, data: "meter_num" }, { data: 'straight_station_num' }, { data: 'straight_meter_num' }, { data: 'straight_fee' }, { data: 'straight_count' }, { readOnly: true, data: 'straight_average_fee_non' }, { data: 'straight_top_fee_non' }, { data: 'straight_low_fee_non' }, { data: 'straight_top_fee' }, { data: 'straight_low_fee' }, { data: 'trans_station_num' }, { data: 'trans_meter_num' }, { data: 'trans_fee' }, { data: 'trans_count' }, { readOnly: true, data: 'trans_average_fee_non' }, { data: 'trans_top_fee_non' }, { data: 'trans_low_fee_non' }, { data: 'trans_top_fee' }, { data: 'trans_low_fee' }, { data: 'trans_self_station_num' }, { readOnly: true, data: 'trans_fee_self_proportion' }, { data: 'trans_replace_station_num' }, { readOnly: true, data: 'trans_replace_proportion' }, { data: 'index_explain' }],
+
+
+		licenseKey: 'non-commercial-and-evaluation',
+	});
+
+	// Handsontable.dom.addEvent(submit, 'click', function() {
+	// // save all cell's data
+	//     ajax('scripts/json/save.json', 'POST', JSON.stringify({data: hot.getData()}), function (res) {
+	//         var response = JSON.parse(res.response);
+	//         alert(response.message);
+	//         // location.href('');
+	//     });
+	// });
+
+
+
+	$(function () {
+
+		//通过
+		$('#pass').click(function () {
+			var month = data[0].month;
+			var province = data[0].statement;
+			$.post({
+				url: "/admin/passFile/"+province+"/"+month,
+				data: {
+					'value': hot.getData()
+					//hot.getData() 返回二维数组
+				},
+				success: function (data) {
+					alert(data.message);
+					if (data.code == 1) {
+						location.href = "/admin/audit";
+					}
+				}
+
+			});
+		});
+
+		//退回
+		$('#back').click(function () {
+			var month = data[0].month;
+			var province = data[0].statement;
+			$.post({
+				url: "/admin/backFile/" + province + "/" + month,
+				data: {
+					'value': hot.getData()
+					//hot.getData() 返回二维数组
+				},
+				success: function (data) {
+					alert(data.message);
+					if (data.code == 1) {
+						location.href = "/admin/audit";
+					}
+				}
+
+			});
+		});
+
+
+
+		
+
+
+	});
+
+</script>
+
+</html>

@@ -1,1 +1,112 @@
-审计页面
+<!--审计页面-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>数据库管理系统</title>
+	<!--jquery-->
+	<script src="/Resources/jquery.min.js"></script>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="/Resources/bootstrap.min.css">
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="/Resources/bootstrap.min.js"></script>
+	<style type="text/css">
+
+		td {
+			vertical-align: middle !important;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="JavaScript:void(0)">
+					<b>数据库管理系统</b>
+				</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="nav">
+
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="">主页</a>
+					</li>
+					<li class="active">
+						<a href="/admin/audit">审核管理</a>
+					</li>
+					<li>
+						<a href="/admin/usermanager">用户管理</a>
+					</li>
+					<li>
+						<a href="/admin/roleIndex">角色管理</a>
+					</li>
+					<li>
+						<a href="/admin/instituteIndex">机构管理</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="JavaScript:void(0)" style="cursor:default">{<$smarty.session.name>}</a>
+					</li>
+					<li>
+						<a href="/user/logout">退出</a>
+					</li>
+				</ul>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+	<div class="container-fluid">
+		<!-- <a class="btn btn-info pull-right" href="#" style="margin:15px 10px 10px;">报表导入</a> -->
+		<table class="table table-bordered table-hover text-center">
+			<thead>
+				<tr class="active">
+					<th class="text-center">公司</th>
+					<th class="text-center">月份</th>
+					<th class="text-center">最后修改时间</th>
+					<th class="text-center" style="width: 90px;">状态</th>
+					<th class="text-center" style="width: 100px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{<foreach $baobiaos as $baobiao>}
+					<tr>
+						<td>{<$baobiao.province>}</td>
+						<!-- <td>{<$baobiao.month>}</td> -->
+						<td>{<$baobiao.month>}</td>
+						<td>{<$baobiao.last_modify_time>}</td>
+						{<if $baobiao.status==1>}
+							<td class="danger">已退回</td>	
+						{<elseif $baobiao.status==5>}
+							<td class="danger">待审核</td>
+						{<elseif $baobiao.status==6>}
+							<td class="success">已通过</td>
+						{</if>}
+						<td>
+							{<if $baobiao.status ==5 ||  $baobiao.status ==6>}
+								<a href="/admin/viewFile/{<$baobiao.month>}/{<$baobiao.province>}" class="btn btn-success btn-xs">查看</a>&nbsp;	
+							{</if>}
+							<!-- {<if $baobiao.status==1 || $baobiao.status==2 ||$baobiao.status==3 ||$baobiao.status==4>}
+							<a href="/staff/editFile" class="btn btn-success btn-xs">修改</a>&nbsp;
+							{</if>} -->
+						</td>
+					</tr>
+					{</foreach>}
+			</tbody>
+		</table>
+</body>
+
+
+</html >
