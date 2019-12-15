@@ -109,9 +109,10 @@
                     "func":"check"
                 },            
                 success:function(data){                      
+                    alert(data.message);
                     if(data.code==1)
                     {
-                        alert(data.message);
+                      
                         $.post({
                             url :"/staff/checkfile",
                             data : {
