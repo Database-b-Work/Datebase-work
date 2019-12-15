@@ -15,7 +15,7 @@ class ZhiBiaoModel extends CI_Model{
         return;
     }
 
-	//admin通过此函数删除zhibiao 里面的数据
+	//通过此函数删除zhibiao 里面的数据
 	public function deleteZhibiao(
         int $month,
 		string $province

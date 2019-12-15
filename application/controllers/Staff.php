@@ -317,6 +317,8 @@ class Staff extends CI_Controller{
             return;
         }
 
+        //先删除原来zhibiao 表中对应的数据:
+        $this->ZhiBiaoModel->deleteZhibiao($_SESSION['editMonth'],$_SESSION['province']);
 
         $data=$this->input->post('value');
         foreach($data as $item){
