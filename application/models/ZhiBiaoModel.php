@@ -14,4 +14,17 @@ class ZhiBiaoModel extends CI_Model{
         $this->db->insert('zhibiao',$data);
         return;
     }
+
+	//admin通过此函数删除zhibiao 里面的数据
+	public function deleteZhibiao(
+        int $month,
+		string $province
+    ){
+        $this->db
+		->where('province',$province)
+        ->where('month',$month)
+		->delete('zhibiao');
+
+    }
+
 }

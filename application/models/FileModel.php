@@ -28,6 +28,38 @@ class FileModel extends CI_Model{
     }
 
 
+	//admin通过此函数得到所有的报表数据
+	public function getFullInfo(){
+		$query=$this->db
+		->order_by('province')
+		->where('status!=',0)
+		->where('status!=',2)
+		->where('status!=',3)
+		->where('status!=',4)
+		->from('baobiao')
+		->get();
+
+		$result=$query->result_array();
+		return $result;
+	}
+
+
+	//admin通过此函数查看报表详情
+	 public function getFileDetail_byAdmin(
+        int $month,
+		string $province
+    ){
+
+        $query=$this->db
+		->where('statement',$province)
+        ->where('month',$month)
+        ->from('branch')
+        ->order_by('type')
+        ->get();
+
+        $result=$query->result_array();
+        return $result;
+    }
 
     //查询baobiao表,得到报表状态 ,staff.php中的viewFile函数用到
     public function getFileStatus(
