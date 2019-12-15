@@ -15,7 +15,31 @@ class StaffModel extends CI_Model{
         ->where('month',$month)
         ->delete('branch');
     }
-  
+    public function checkauth(
+        string $name
+    )
+    {
+       $subQuery=$this->db
+       ->select('id')
+       ->from('user')
+       ->where('username',$name)
+       ->get_compiled_select();
+
+
+       $subQuery=$this->db
+       ->select('roleid')
+       ->from('user_role')
+       ->join("(($subQuery) AS TABLEB)",'user_role.userid=TABLEB.id')
+       ->get_compiled_select();
+
+       $result=$this->db
+       ->select('ruleid')
+       ->from('role_rule')
+       ->join("(($subQuery) AS TABLEB)",'role_rule.roleid=TABLEB.roleid')
+       ->get()->result_array();
+       
+       return $result;
+    }
     //通过数组直接插入,用于用户修改报表 editFile.php ,TestImportExcel_model中则是传入字符串，两种不同的方式
     public function insertExcel(
         array $item
