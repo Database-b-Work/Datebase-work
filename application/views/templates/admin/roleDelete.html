@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据库馆管理系统</title>
+    <!--jquery-->
+    <script src="/Resources/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/Resources/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/Resources/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="JavaScript:void(0)">
+                    <b>数据库管理系统</b>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="admin/audit">审核管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/userIndex">用户管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/roleIndex">角色管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/instituteIndex">机构管理</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="JavaScript:void(0)" style="cursor:default">{<$smarty.session.name>}</a>
+                    </li>
+                    <li>
+                        <a href="/user/logout">退出</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="h3 text-center" style="margin-top: 100px;">
+        <b>删除角色</b>
+    </div>
+    <form id="form" class="form-horizontal text-center" style="width:250px;margin: 20px auto 0;">
+        <div class="form-group">
+          <div class="input-group-addon">
+             {<html_checkboxes values=$b output=$a name="check" separator="<br>">}                
+            </div>      
+        </div>  
+        <div class="form-group">
+            <button type="button" id="submit" class="btn btn-primary" style="margin-right: 10px">删&nbsp;除</button>
+            <button type="reset" id="reset" class="btn btn-danger" style="margin-left: 10px">重&nbsp;置</button>
+        </div>
+    </form>
+</body>
+
+<script>
+
+    $(function(){
+
+        $("#submit").click(function(){
+            var ck=$("input[type='checkbox']:checked");
+            var ckVal="";
+            for(var i=0;i<ck.length;i++)
+            {
+                 ckVal+=$(ck[i]).val()+",";   
+            }
+            
+            alert(ckVal);
+          
+            $.post({
+                url: "/Admin/dropRole",
+                data: {
+                
+                 "value": ckVal
+                },
+                success: function(data){
+                    alert(data.message);
+                    if(data.code == 1){
+                        $("#reset").click();
+                    }
+                }
+            })
+        });
+
+    })
+
+</script>
+
+</html>

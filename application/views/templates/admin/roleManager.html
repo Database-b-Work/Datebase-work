@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据库管理系统</title>
+    <!--jquery-->
+    <script src="/Resources/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/Resources/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/Resources/bootstrap.min.js"></script>
+    <style type="text/css">
+        td {
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="JavaScript:void(0)">
+                    <b>数据库管理系统</b>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="admin/audit">审核管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/userIndex">用户管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/roleIndex">角色管理</a>
+                    </li>
+                    <li>
+                        <a href="/admin/instituteIndex">机构管理</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="JavaScript:void(0)" style="cursor:default">{<$smarty.session.name>}</a>
+                    </li>
+                    <li>
+                        <a href="/user/logout">退出</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="text-center container" style="width:65%;margin-top:40px;padding-top:10px;background-color: #f5f5f5;border-radius:20px;">
+        <div class="h4">
+            <b>角色信息</b>
+        </div>
+        <b>{<$rolename.name>}拥有如下权限</b>
+        <p></p>
+        <p></p>
+        <p>  
+        {<foreach $roleInfo as $role>}                    
+               <b> <td>{<$role.name1>}</td></b>
+            <!-- <td>{<$user.last_login_time>}</td> -->                
+        {</foreach>}
+    </p>
+        <div style="width: 450px;margin:20px auto;overflow: hidden;display: flex;justify-content: space-between">
+            <button class="btn btn-success" data-toggle="modal" data-target="#info">修改角色名</button>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#pwd">修改角色权限</button>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#del">分配用户</button>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#delete">删除用户</button>
+        </div>
+    </div>
+    <div class="container-fluid text-center">
+        <!-- 修改角色信息模态框（Modal） -->
+        <div class="modal fade" id="info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:150px;">
+                <div class="modal-content">
+                    <form id="changeInfo">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                修改角色名
+                            </h4>
+                        </div>
+                        <div class="modal-body center-block" style="width:45%">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">姓名</div>
+                                    <input name="rolename" type="text" class="form-control" value="{<$rolename.name>}">
+                                </div>
+                            </div>
+                        
+                        </div>
+                        <div class="modal-footer">
+                            <button id="changeButton" type="button" class="btn btn-primary">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+        <!-- 修改角色权限模态框（Modal） -->
+        <div class="modal fade" id="pwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:150px;">
+                <div class="modal-content">
+                    <div>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                修改角色权限
+                            </h4>
+                        </div>
+                        <div class="modal-body center-block" style="width:45%">
+                            <div class="form-group " style="margin-bottom:0">
+                                    <div class="input-group-addon">
+                                            请选择权限
+                                        </div>
+                                        <div class="input-group-addon">
+                                         {<html_checkboxes values=$b output=$a name="check" separator="<br>">}                
+                                        </div>           
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="pwdButton" type="button" class="btn btn-primary">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+        <!-- 分配用户模态框（Modal） -->
+        <div class="modal fade" id="del" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:150px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            分配用户
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>请选择要分配的用户（分配后当前角色将覆盖该用户原角色）</h3>
+                            {<html_checkboxes values=$e output=$f name="checkbox" separator="<br>">}                
+                    </div>
+                    <div class="modal-footer">
+                        <button id="roleButton" class="btn btn-primary">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="margin-top:150px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">
+                                删除用户
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>请选择要删除的用户</h3>
+                                {<html_checkboxes values=$h output=$i name="checkbox1" separator="<br>">}                  
+                        </div>
+                        <div class="modal-footer">
+                            <button id="delButton" class="btn btn-primary">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal -->
+            </div>
+    </div>
+</body>
+<script>
+
+    $(function(){
+
+        //更改信息
+        $("#changeButton").click(function(){
+            //alert('1');
+            $.post({
+                url: "/admin/changerolename",
+                data: "id={<$rolename.code>}&" + $("#changeInfo").serialize(),
+                success:function(data){
+                    alert(data.message);
+                    if(data.code == 0){
+                        location.reload();
+                    }
+                }
+            })
+        });
+
+           //修改密码
+           $("#pwdButton").click(function(){
+            var ck=$("input[type='checkbox']:checked");
+            var ckVal="";
+            for(var i=0;i<ck.length;i++)
+            {
+                 ckVal+=$(ck[i]).val()+",";   
+            }
+            
+            $.post({
+                url: "/admin/updateauth",
+                data:{
+                     "id" : "{<$rolename.code>}",
+                    "value": ckVal
+                },
+                success:function(data){
+                    alert(data.message);
+                    if(data.code == 1){
+                        $("#reset").click();
+                    }
+                }
+            })
+        });
+        $("#roleButton").click(function(){
+            var ck=$("input[type='checkbox']:checked");
+            var ckVal="";
+            for(var i=0;i<ck.length;i++)
+            {
+                 ckVal+=$(ck[i]).val()+",";   
+            }
+            
+            $.post({
+                url: "/admin/updaterole",
+                data:{
+                    "roleid" : "{<$rolename.code>}",
+                    "value":ckVal
+                },
+                success:function(data){
+                    alert(data.message);
+                    location.href = "/admin/roleManager/";
+                }
+            })
+        });
+
+        $("#delButton").click(function(){
+            var ck=$("input[type='checkbox']:checked");
+            var ckVal="";
+            for(var i=0;i<ck.length;i++)
+            {
+                 ckVal+=$(ck[i]).val()+",";   
+            }
+            
+            $.post({
+                url: "/admin/deleteroleuser",
+                data:{
+                    "roleid" : "{<$rolename.code>}",
+                    "value":ckVal
+                },
+                success:function(data){
+                    alert(data.message);
+                    location.href = "/admin/roleManager/";
+                }
+            })
+        });
+
+
+
+    })
+
+</script>
+
+</html>
