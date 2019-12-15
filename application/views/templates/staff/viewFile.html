@@ -41,18 +41,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="">主页</a>
-                    </li>
+           
                     <li class="active">
                         <a href="/Staff/index">报表管理</a>
                     </li>
-                    <li>
-                        <a href="">功能2</a>
-                    </li>
-                    <li>
-                        <a href="">功能3</a>
-                    </li>
+          
                     <li>
                         <a href="/Staff/check">报表稽核</a>
                     </li>
@@ -106,22 +99,54 @@
     
 
     $(function(){
-        $('#check').click(function(){
+        $('#check').click(function(){ //坑：后端千万别echo 会算在回调的data中，导致data不是json类型
             $.post({
-                url :"/staff/checkfile",
-                data : {
-                    'value':hot.getData()
-                    //hot.getData() 返回二维数组
-                },
-                success: function(data){
-                    alert(data.message);
-                }
+                async : false,
+                url:"/staff/checkauth",
+                dataType: "json",
+                data:{
+                    "value":"{<$smarty.session.name>}",
+                    "func":"check"
+                },            
+                success:function(data){                      
+                    if(data.code==1)
+                    {
+                        alert(data.message);
+                        $.post({
+                            url :"/staff/checkfile",
+                            data : {
+                            'value':hot.getData()
+                            //hot.getData() 返回二维数组
+                              },
+                                success: function(data){
+                                 alert(data.message);
+                              }
 
+                           });
+                    } 
+                }
+                
             });
+            
         });
 
         $('#calculate').click(function(){
-            $.post({
+           $.post({
+                async : false,
+                
+                dataType: "json",
+               url:"/staff/checkauth",
+               data:{
+                
+                   "value":"{<$smarty.session.name>}",
+                   "func":"calculate"
+               },
+               success:function(data){
+                   alert(data.message);
+                   if(data.code==1)
+                   {
+                    $.post({
+                
                 url :"/staff/calculateFile",
                 data : {
                     'value':hot.getData()
@@ -131,11 +156,29 @@
                     alert(data.message);
                 }
 
-            });
+           
         });
-
+               }
+                   }
+               });
+           });
+           
+           
+         
         $('#change').click(function(){
-            $.post({
+           $.post({
+            async : false,
+                url:"/staff/checkauth",
+                dataType: "json",
+               data:{
+                   "value":"{<$smarty.session.name>}",
+                   "func":"change"
+               },
+               success:function(data){
+                   alert(data.message);
+                   if(data.code==1)
+                   {
+                    $.post({
                 url :"/staff/editfile",
                 data : {
                     'value':hot.getData()
@@ -147,20 +190,43 @@
                 }
 
             });
-        });
+                   }
 
+                   }
+               });
+           });
+           
+        
         $('#submit').click(function(){
-            $.post({
+           $.post({
+            async : false,
+                url:"/staff/checkauth",
+                dataType: "json",
+               data:{
+                   "value":"{<$smarty.session.name>}",
+                   "func":"submit"
+               },
+               success:function(data){
+                   alert(data.message);
+                   if(data.code==1)
+                   {
+                    $.post({
                 url :"/staff/submitFile",
                 success: function(data){
                     alert(data.message);
                     if(data.code==1){
                         location.href="/staff/index";
                     }
+                
                 }
-
             });
+                   
+                   }
+               }
+           });
         });
+           
+           
 
         $('#export').click(function(){
             const exportPlugin=hot.getPlugin('exportFile');

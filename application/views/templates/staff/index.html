@@ -37,17 +37,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="">主页</a>
-                    </li>
+            
                     <li class="active">
                         <a href="/Staff/index">报表管理</a>
-                    </li>
-                    <li>
-                        <a href="">功能2</a>
-                    </li>
-                    <li>
-                        <a href="">功能3</a>
                     </li>
                     <li>
                         <a href="/Staff/check">报表稽核</a>
@@ -171,8 +163,23 @@
             var data = new FormData();
             data.append('userfile', files[0]);
             data.append('month',month);
-
-            $.post({
+            
+    
+           $.post({
+                async : false,
+                
+                dataType: "json",
+               url:"/staff/checkauth",
+               data:{
+                
+                   "value":"{<$smarty.session.name>}",
+                   "func":"submit1"
+               },
+               success:function(data){
+                   alert(data.message);
+                   if(data.code==1)
+                   {
+                    $.post({
                 // type: 'POST',
                 url: "/testimportexcel/importexcel",
                 data: data,
@@ -184,13 +191,18 @@
                     location.href="/staff/index";
                 }
             });
-        });
+                   }
+               }
+                   });
+            
+           });
+          
+
+     
 
 
 
-
-
-    });
+    })
 
 </script>
 
