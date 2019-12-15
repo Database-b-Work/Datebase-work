@@ -136,6 +136,14 @@
                         $excel_data[18]=$excel_data[16]/$excel_data[17];
                         $excel_data[24]=$excel_data[23]/$excel_data[14];
                         $excel_data[26]=$excel_data[25]/$excel_data[14];
+                        if(!$this->testimportexcel_model->check_excel($_SESSION['province'],$excel_data[1],$excel_data[2])
+                        )
+                           { $this->output->set_output(json_encode([
+                                "code" => 0,
+                                "message" => "当前月份已经上传过"
+                            ]));
+                            return;
+                        }
                         $this->testimportexcel_model->insert_excel($_SESSION['province'],$excel_data[1],$excel_data[2],$excel_data[3],$excel_data[4],$excel_data[5],$excel_data[6],$excel_data[7],$excel_data[8],$excel_data[9],
                         $excel_data[10],$excel_data[11],$excel_data[12],$excel_data[13],$excel_data[14],$excel_data[15],$excel_data[16],$excel_data[17],$excel_data[18],
                         $excel_data[19],$excel_data[20],$excel_data[21],$excel_data[22],$excel_data[23],$excel_data[24],$excel_data[25],$excel_data[26],$excel_data[27]);

@@ -29,11 +29,84 @@ class Staff extends CI_Controller{
     }
 
 
+    public function checkauth()
+    {
+        $this->output->set_content_type("application/json");
+        $check['name']=  $this->input->post('value',TRUE);
+        $check['func']=$this->input->post('func',TRUE);
+       // print_r($check);
+        
+        if($this->input->method()!='post')
+        {
+            $this->output->set_output(json_encode([
+                "code" => 0,
+                "message" => "非法请求"
+            ]));
+            return;
+        }
+        $check['name']=  $this->input->post('value',TRUE);
+        $check['func']=$this->input->post('func',TRUE);
+        
+        $auth=$this->StaffModel->checkauth($check['name']);
+      //  print_r($auth);
+        $temp=0;
+        foreach($auth as $result)
+        {
+            if($check['func']=="submit1" && $result['ruleid']==3)
+            {
+                $temp=1;
+                
+            break;
+            }
+         
+            if($check['func']=="check" && $result['ruleid']==2)
+            {
+                $temp=1;
+                
+            break;
+            }
+            if($check['func']=="calculate" && $result['ruleid']==2)
+            {
+                $temp=1;
+            break;
+            }
+            if($check['func']=="change" && $result['ruleid']==2)
+            {
+                $temp=1;
+            break;
+            }
+            if($check['func']=="submit" && $result['ruleid']==1)
+            {
+                $temp=1;
+            break;
+            }
+        }
+       // echo $temp;
+        if($temp===0)
+        {
+            $this->output->set_output(json_encode([
+                "code" => 0,
+                "message" => "对不起，你没有相应权限！"
+                
+            ]));
+            return;
+        }
+        else
+        {
+            $this->output->set_output(json_encode([
+                "code" => 1,
+                "message" => "权限审核通过"
+            ]));
+           
+        }
+        return;
+    }
     /**
      * @description: 报表查看 (也是报表修改,稽核,计算，上报的唯一入口点)
      * @param {type} 
      * @return: 
      */
+
     public function viewFile(
         int $month
     ){
