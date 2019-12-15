@@ -3,8 +3,10 @@ class Admin extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
-        $this->load->library("session");
+         $this->load->library("session");
         $this->load->model("AdminModel");
+		$this->load->model("FileModel");
+		$this->load->model('ZhiBiaoModel');
 
         //权限控制
         if(@!($_SESSION['isLogined']&&$_SESSION['admin'])){
