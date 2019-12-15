@@ -211,10 +211,19 @@ class Staff extends CI_Controller{
         $this->output->set_content_type("application/json");
 
         //已上报的不允许编辑（还有已上报和未上传,防止前端绕过,这里再次进行检查）
-        if($_SESSION['editStatus']==5|| $_SESSION['editStatus']==6||$_SESSION['editStatus']==0){
+      if($_SESSION['editStatus']==3){
             $this->output->set_output(json_encode([
                 "code" => 0,
-                "message" => "该状态不允许编辑"
+                "message" => "当前状态为已经稽核状态，请不要重复稽核"
+            ]));
+            return;
+        }
+
+
+        if($_SESSION['editStatus']!=2&&$_SESSION['editStatus']!=1){
+            $this->output->set_output(json_encode([
+                "code" => 0,
+                "message" => "该状态不允许稽核"
             ]));
             return;
         }

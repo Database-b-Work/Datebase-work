@@ -740,7 +740,7 @@ class Admin extends CI_Controller{
             if(empty($temp)){
                 $temp[0]['parentid']=0; //若是上级公司不确定
             }
-            $institute['parentid']=$temp[0]['id'];
+            $institute['parentid']=$temp[0]['parentid'];
             $this->AdminModel->addInstitute($institute);
             $this->output->set_output(json_encode([
                 "code" => 1,
@@ -800,13 +800,94 @@ class Admin extends CI_Controller{
 
     
 
-
-    //审核
+//审核
     public function audit()
     {
-        
-        $this->ci_smarty->assign("");
+     
+		
+		// $result=$this->FileModel->getFileDetail($i);
+		
+		$result=$this->FileModel->getFullinfo();
+        //直接返回结果(二维数组)，然后交给前端处理
+        $this->ci_smarty->assign("baobiaos",$result);
         $this->ci_smarty->display("admin/audit.html");
     }
+	
+	public function viewFile(int $month,string $province){
+	
+        //$_SESSION['editMonth']=$month;
+        //$_SESSION['editStatus']=$this->FileModel->getFileStatus($month);
+        //通过把要修改的month 放到session里，绑定要操作的month,防止用户恶意篡改其他月份信息，比如修改已经通过审核的月份报表信息
+        //同时把status 放到session中，为了方便后面使用
+		$province=urldecode($province);
+        $result=$this->FileModel->getFileDetail_byAdmin($month,$province);
+        if(empty($result)){
+            echo "<script>alert('未上传$month 月份报表')</script>";
+            header("refresh:0;url=/admin/audit");
+            return;
+        }
+
+        //传二维数组的json 形式到前端 ，前端不需要解析json，直接用
+        //如果直接传二维数组会报错
+        //前端script标签要加上type="text/Javascript"，否则js中无法使用smarty
+        $this->ci_smarty->assign('result',json_encode($result));
+        $this->ci_smarty->display('admin/viewFile.html');
+    
+
+	}
+
+	public function passFile(
+		string $province,
+		int $month
+	){
+	//更新报表状态6(确认状态)
+	 $condition=[
+            "province"=>urldecode($province),
+            "month" => $month
+        ];
+        $dest=[
+            "status" =>6
+        ];
+        $this->FileModel->updateFile($condition,$dest);
+
+        $this->output->set_content_type("application/json");
+
+		$this->output->set_output(json_encode([
+            "code" => 1,
+            "message" => "通过成功"
+        ]));
+        return;
+
+	}
+
+	//退回文件
+	public function backFile(
+		string $province,
+		int $month
+	){
+	//更新报表状态1(退回状态)
+	 $condition=[
+            "province"=>urldecode($province),
+            "month" => $month
+        ];
+        $dest=[
+            "status" =>1
+        ];
+        $this->FileModel->updateFile($condition,$dest);
+		
+		//删除zhibiao表中的相关数据
+		$this->ZhiBiaoModel->deleteZhibiao($month,urldecode($province));
+
+        $this->output->set_content_type("application/json");
+
+		$this->output->set_output(json_encode([
+            "code" => 1,
+            "message" => "退回成功"
+        ]));
+        return;
+
+	}
+
+
 
 }
